@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const flickerVariants = {
   initial: { opacity: 0 },
@@ -18,58 +18,11 @@ export default function AccessTerminal() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [listening, setListening] = useState(false);
-  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     setTimeout(() => setFlicker(false), 1200);
     inputRef.current?.focus();
   }, []);
-
-  // Voice input setup
-  useEffect(() => {
-    if (typeof window !== "undefined" && 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = "en-US";
-      recognitionRef.current.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setInput(transcript);
-        setListening(false);
-      };
-      recognitionRef.current.onerror = () => setListening(false);
-      recognitionRef.current.onend = () => setListening(false);
-    }
-  }, []);
-
-  const handleMic = () => {
-    if (!recognitionRef.current) return;
-    if (listening) {
-      recognitionRef.current.stop();
-      setListening(false);
-    } else {
-      recognitionRef.current.start();
-      setListening(true);
-    }
-  };
-
-  // Voice output (text-to-speech)
-  useEffect(() => {
-    if (response && !loading && typeof window !== "undefined" && 'speechSynthesis' in window) {
-      const utter = new window.SpeechSynthesisUtterance(response);
-      utter.rate = 1.05;
-      utter.pitch = 0.7;
-      utter.volume = 1;
-      // Try to use a retro/robotic voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const retroVoice = voices.find(v => v.name.toLowerCase().includes("fred") || v.name.toLowerCase().includes("zarvox") || v.name.toLowerCase().includes("trinoids") || v.name.toLowerCase().includes("robot"));
-      if (retroVoice) utter.voice = retroVoice;
-      window.speechSynthesis.cancel(); // Stop any current speech
-      window.speechSynthesis.speak(utter);
-    }
-  }, [response, loading]);
 
   // Retro system prompts for each action
   const getSystemPrompt = (action: string) => {
@@ -92,7 +45,7 @@ export default function AccessTerminal() {
       const res = await fetch("/api/ollama", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: `${systemPrompt}${input}` }),
+        body: JSON.stringify({ prompt: `${systemPrompt}\nUSER: ${input}` }),
       });
       if (!res.body) throw new Error("No response body");
       const reader = res.body.getReader();
@@ -109,7 +62,7 @@ export default function AccessTerminal() {
         done = doneReading;
       }
       setLoading(false);
-    } catch (err) {
+    } catch {
       setError("Failed to connect to backend");
       setLoading(false);
     }
@@ -135,18 +88,6 @@ export default function AccessTerminal() {
               autoComplete="off"
               spellCheck={false}
             />
-            <button
-              onClick={handleMic}
-              className={`ml-2 p-1 rounded-full border-2 ${listening ? 'border-red-500' : 'border-[#00ff00]'} bg-black text-[#00ff00] focus:outline-none`}
-              title={listening ? "Stop Listening" : "Start Voice Input"}
-              style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              {listening ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="red" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00ff00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1v22m6-6a6 6 0 0 1-12 0"/><rect x="9" y="9" width="6" height="6" rx="3"/></svg>
-              )}
-            </button>
             <span className="ml-[-2px] animate-blink text-[#00ff00] font-mono text-lg select-none">|</span>
           </div>
           <div className="flex w-full gap-3 mb-3">
@@ -173,7 +114,22 @@ export default function AccessTerminal() {
         <div className="text-xs text-[#00ff00]/80 font-mono text-center mt-2 select-none" style={{ textShadow: '0 0 4px #00ff00' }}>
           {loading && <span>Processing...</span>}
           {!loading && error && <span className="text-red-400">{error}</span>}
-          {!loading && response && <span>{response}</span>}
+          {!loading && response && (
+            <pre
+              style={{
+                background: "transparent",
+                color: "#00ff00",
+                textAlign: "left",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+                fontFamily: 'inherit',
+                margin: 0,
+                padding: 0,
+                maxHeight: '180px',
+                overflowY: 'auto',
+              }}
+            >{response}</pre>
+          )}
           {!loading && !response && !error && <span>Awaiting input...</span>}
         </div>
       </div>
