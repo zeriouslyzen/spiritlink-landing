@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SYN7H[λ] Icon Generator</title>
+    <style>
+        body { margin: 0; background: #000; }
+        svg { border: 1px solid #333; margin: 10px; }
+    </style>
+</head>
+<body>
+    <!-- 512x512 Icon -->
+    <svg width="512" height="512" viewBox="0 0 512 512">
+        <defs>
+            <linearGradient id="cyber-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#000000"/>
+                <stop offset="50%" style="stop-color:#181a2a"/>
+                <stop offset="100%" style="stop-color:#000000"/>
+            </linearGradient>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#cyber-gradient)"/>
+        <text x="50%" y="50%" 
+              font-family="monospace" 
+              font-size="120" 
+              fill="#00fff7" 
+              text-anchor="middle" 
+              dominant-baseline="middle"
+              filter="url(#glow)"
+              style="font-weight: bold;">
+            SYN7H
+        </text>
+        <text x="50%" y="65%" 
+              font-family="monospace" 
+              font-size="160" 
+              fill="#00fff7" 
+              text-anchor="middle" 
+              dominant-baseline="middle"
+              filter="url(#glow)"
+              style="font-weight: bold;">
+            λ
+        </text>
+    </svg>
+
+    <!-- 192x192 Icon -->
+    <svg width="192" height="192" viewBox="0 0 192 192">
+        <defs>
+            <linearGradient id="cyber-gradient-small" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#000000"/>
+                <stop offset="50%" style="stop-color:#181a2a"/>
+                <stop offset="100%" style="stop-color:#000000"/>
+            </linearGradient>
+            <filter id="glow-small">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#cyber-gradient-small)"/>
+        <text x="50%" y="50%" 
+              font-family="monospace" 
+              font-size="45" 
+              fill="#00fff7" 
+              text-anchor="middle" 
+              dominant-baseline="middle"
+              filter="url(#glow-small)"
+              style="font-weight: bold;">
+            SYN7H
+        </text>
+        <text x="50%" y="65%" 
+              font-family="monospace" 
+              font-size="60" 
+              fill="#00fff7" 
+              text-anchor="middle" 
+              dominant-baseline="middle"
+              filter="url(#glow-small)"
+              style="font-weight: bold;">
+            λ
+        </text>
+    </svg>
+
+    <!-- Apple Touch Icon 180x180 -->
+    <svg width="180" height="180" viewBox="0 0 180 180">
+        <defs>
+            <linearGradient id="cyber-gradient-apple" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#000000"/>
+                <stop offset="50%" style="stop-color:#181a2a"/>
+                <stop offset="100%" style="stop-color:#000000"/>
+            </linearGradient>
+            <filter id="glow-apple">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#cyber-gradient-apple)"/>
+        <text x="50%" y="50%" 
+              font-family="monospace" 
+              font-size="42" 
+              fill="#00fff7" 
+              text-anchor="middle" 
+              dominant-baseline="middle"
+              filter="url(#glow-apple)"
+              style="font-weight: bold;">
+            SYN7H
+        </text>
+        <text x="50%" y="65%" 
+              font-family="monospace" 
+              font-size="56" 
+              fill="#00fff7" 
+              text-anchor="middle" 
+              dominant-baseline="middle"
+              filter="url(#glow-apple)"
+              style="font-weight: bold;">
+            λ
+        </text>
+    </svg>
+</body>
+</html> 

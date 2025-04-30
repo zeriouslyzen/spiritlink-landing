@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 type ServiceCardProps = {
   title: string;
@@ -8,7 +8,7 @@ type ServiceCardProps = {
   plain: string;
 };
 
-const glitchVariants = {
+const glitchVariants: Variants = {
   initial: { opacity: 1, x: 0, filter: "none" },
   glitch: {
     opacity: [1, 0.7, 1],
@@ -19,7 +19,7 @@ const glitchVariants = {
       "drop-shadow(0 0 4px #00fff7)",
       "none",
     ],
-    transition: { duration: 0.25, repeat: 1, repeatType: "reverse" },
+    transition: { duration: 0.25, repeat: 1, repeatType: "mirror" },
   },
 };
 

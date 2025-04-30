@@ -5,13 +5,15 @@ import React, { useEffect, useRef } from "react";
 const glyphs = "アァイィウヴエェオカガキギクグケゲコゴサザシジスズセゼソゾタダチッヂヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤャユュヨョラリルレロワヲン0123456789@#$%&*".split("");
 
 function MatrixRain() {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    
     let width = window.innerWidth;
     let height = window.innerHeight;
     canvas.width = width;
@@ -20,6 +22,8 @@ function MatrixRain() {
     const columns = Math.floor(width / fontSize);
     const dropSpeed = 0.05; // Even slower for visual breathing
     const drops = Array(columns).fill(1);
+
+    const ctx = context as CanvasRenderingContext2D;
 
     function draw() {
       ctx.fillStyle = "rgba(10, 10, 20, 0.12)"; // Lower opacity for more subtle effect
@@ -48,8 +52,10 @@ function MatrixRain() {
     function handleResize() {
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+      if (canvas) {
+        canvas.width = width;
+        canvas.height = height;
+      }
     }
     window.addEventListener("resize", handleResize);
     return () => {
@@ -96,4 +102,4 @@ const SacredGeometryBackground: React.FC = () => (
   </div>
 );
 
-export default SacredGeometryBackground; 
+export default SacredGeometryBackground;
